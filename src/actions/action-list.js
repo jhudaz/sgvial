@@ -20,12 +20,11 @@ export function createList() {
 }
 //GET  user by id
 export function getUser(id) {
-  console.log('id: ',id);
   return dispatch => {
     return axios
       .get(`${url}/${id}`)
       .then(res => {
-        dispatch ({
+        dispatch({
           type: 'USER',
           payload: res.data
         })
@@ -33,11 +32,10 @@ export function getUser(id) {
       .catch(err => {
         throw err
       })
+  }
 }
-}
-
 //POST
-export function createUser(id, name, username, email, city) {
+export function createUser(name, username, email, city) {
   return dispatch => {
     return axios
       .post(`${url}`, { name, username, email, city })
@@ -52,11 +50,10 @@ export function createUser(id, name, username, email, city) {
   }
 }
 //UPDATE
-export function updateUser(id, name, username, email, city) {
-  console.log('datos: ', id, name, username, email, city)
+export function updateUser(data) {
   return dispatch => {
     return axios
-      .put(`${url}/${id}`, { name, username, email, city })
+      .put(`${url}/${data.id}`, { name: data.name, username: data.userName, email: data.email, city: data.city })
       .then(res => {
         dispatch(
           createList()
@@ -71,7 +68,7 @@ export function updateUser(id, name, username, email, city) {
 export function deleteUser(id) {
   return dispatch => {
     return axios
-      .delete(`${url}/`, { data: { id } })
+      .delete(`${url}/${id}`)
       .then(res => {
         dispatch(
           createList()

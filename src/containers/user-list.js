@@ -58,7 +58,9 @@ class UsersList extends Component {
               onClick={() => this.editUser(user)}>
               Edit
             </Button>
-            <Button secondary>
+            <Button 
+              secondary
+              onClick={() => this.props.deleteUser(user.id)}>
               Delete
             </Button>
           </div>

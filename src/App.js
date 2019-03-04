@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import UsersList from './containers/user-list';
-import UserForm from './containers/user-form';
 
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div>
-          <Route exact path="/" component={UsersList} />
-          <Route path="/edit/:userId" component={UserForm} />
-        </div>
-      </Router>
+      <UsersList />
     );
   }
 }

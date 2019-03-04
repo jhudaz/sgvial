@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Form, Header, Modal } from 'semantic-ui-react';
+import { Button, Form, Header, Modal, Loader } from 'semantic-ui-react';
 
 import { createUser, updateUser } from '../actions';
 
@@ -15,7 +15,8 @@ class UserForm extends Component {
       name: '',
       userName: '',
       email: '',
-      city: ''
+      city: '',
+      loading: false
     }
   }
   componentDidMount() {
@@ -29,24 +30,26 @@ class UserForm extends Component {
     }
   }
   //to save an user
-  saveUser() {
-    this.props.createUser(
-      this.state.name,
-      this.state.userName,
-      this.state.email,
-      this.state.city
-    )
-    this.setState({ modalOpen: this.props.close()})
-  }
-  editUser() {
-    this.props.updateUser(
-      this.props.user.id,
-      this.state.name,
-      this.state.userName,
-      this.state.email,
-      this.state.city
-    )
-    this.setState({ modalOpen: this.props.close()})
+  saveData() {
+    const data = {
+      name: this.state.name,
+      userName: this.state.userName,
+      email: this.state.email,
+      city: this.state.city
+    };
+    this.setState({ loading: true });
+    if (this.props.user !== null) {
+
+      this.props.updateUser({ ...data, id: this.props.user.id }).then(() => {
+        this.setState({ loading: false });
+        this.props.close();
+      });
+    } else {
+      this.props.createUser(data).then(() => {
+        this.setState({ loading: false });
+        this.props.close();
+      });
+    }
   }
   render() {
     return (
@@ -90,16 +93,12 @@ class UserForm extends Component {
               <Button.Or />
               <Button
                 positive
-                onClick={() => {
-                  if (this.props.user !== null) {
-                    this.editUser();
-                  } else {
-                    this.saveUser();
-                  }
-                }}>
+                onClick={() => this.saveData()}>
                 Save
             </Button>
             </Button.Group>
+            {this.state.loading && <Loader active inline='centered' size='big'>Loading</Loader>}
+
           </Form>
         </Modal.Content>
       </Modal>
