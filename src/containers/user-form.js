@@ -18,7 +18,16 @@ class UserForm extends Component {
       city: ''
     }
   }
-
+  componentDidMount() {
+    if (this.props.user !== null) {
+      this.setState({
+        name: this.props.user.name,
+        userName: this.props.user.username,
+        email: this.props.user.email,
+        city: this.props.user.address.city
+      })
+    } 
+  }
   //to save an user
   saveUser() {
     this.props.createUser(
@@ -27,13 +36,12 @@ class UserForm extends Component {
       this.state.email,
       this.state.city
     )
-    
   }
   render() {
     return (
       <Modal
         open={this.state.modalOpen}
-        //onClose={this.setState({modalOpen: !this.state.modalOpen})}
+        onClose={() => this.props.close()}
         basic
         size='small'
       >
@@ -45,23 +53,27 @@ class UserForm extends Component {
               <Form.Input
                 fluid label='Full name'
                 placeholder='First name'
-                onChange={e => this.setState({ name: e.target.value })} />
+                onChange={e => this.setState({ name: e.target.value })}
+                value={this.state.name} />
               <Form.Input
                 fluid label='User name'
                 placeholder='Last name'
-                onChange={e => this.setState({ userName: e.target.value })} />
+                onChange={e => this.setState({ userName: e.target.value })}
+                value={this.state.userName}  />
               <Form.Input
                 fluid label='Email'
                 placeholder='Email'
-                onChange={e => this.setState({ email: e.target.value })} />
+                onChange={e => this.setState({ email: e.target.value })}
+                value={this.state.email}  />
               <Form.Input
                 fluid label='City'
                 placeholder='City'
-                onChange={e => this.setState({ city: e.target.value })} />
+                onChange={e => this.setState({ city: e.target.value })}
+                value={this.state.city}  />
             </Form.Group>
             <Button.Group>
               <Button
-                onClick={() => this.setState({modalOpen: this.props.close})}>
+                onClick={() => this.setState({ modalOpen: this.props.close() })}>
                 Cancel
             </Button>
               <Button.Or />

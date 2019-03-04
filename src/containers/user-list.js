@@ -14,7 +14,8 @@ class UsersList extends Component {
     super(props)
     this.state = {
       users: [],
-      showModal: false
+      showModal: false,
+      user: null
     }
     this.filterList = this.filterList.bind(this);
   }
@@ -31,23 +32,30 @@ class UsersList extends Component {
       users: this.props.reducerApp.users.filter(a => a.name.toLowerCase().startsWith(e.toLowerCase()))
     })
   }
-  createList(e, i) {
+  editUser(user) {
+    this.props.getUser(user.id).then(
+      this.setState({
+        showModal: true, user
+      })
+    )
+  }
+  createList(user, i) {
     return (
       <Card key={i}>
         <Card.Content>
-          <Card.Header>{e.name}</Card.Header>
-          <Card.Meta>{e.username}</Card.Meta>
+          <Card.Header>{user.name}</Card.Header>
+          <Card.Meta>{user.username}</Card.Meta>
           <Card.Description>
-            <strong>Email</strong>: {e.email}
+            <strong>Email</strong>: {user.email}
             <br />
-            <strong>City</strong>: {e.address.city}
+            <strong>City</strong>: {user.address.city}
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
           <div>
-            <Button 
+            <Button
               primary
-              onClick={() => this.props.getUser(this.props.reducerApp.users[i].id)}>
+              onClick={() => this.editUser(user)}>
               Edit
             </Button>
             <Button secondary>
@@ -85,7 +93,7 @@ class UsersList extends Component {
           {this.state.users.map((e, i) => this.createList(e, i))}
         </Card.Group>
         {this.state.showModal &&
-          <UserForm close={false} />
+          <UserForm user={this.state.user} close={() => this.setState({ showModal: false, user: null })} />
         }
       </Container>
     )

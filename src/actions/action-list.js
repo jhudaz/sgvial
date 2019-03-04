@@ -23,11 +23,11 @@ export function getUser(id) {
   console.log('id: ',id);
   return dispatch => {
     return axios
-      .get(`${url}/`, { params: { id } })
+      .get(`${url}/${id}`)
       .then(res => {
         dispatch ({
-          type:'USER',
-          payload:res.data
+          type: 'USER',
+          payload: res.data
         })
       })
       .catch(err => {
