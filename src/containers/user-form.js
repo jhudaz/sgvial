@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Form, Header, Icon, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Modal } from 'semantic-ui-react';
 
 import { createUser } from '../actions';
 
@@ -18,13 +18,7 @@ class UserForm extends Component {
       city: ''
     }
   }
-  //to close the modal and redirect to the users list
-  handleClose() {
-    this.setState({
-      modalOpen: !this.state.modalOpen
-    });
-    this.props.history.push('/');
-  }
+
   //to save an user
   saveUser() {
     this.props.createUser(
@@ -33,16 +27,13 @@ class UserForm extends Component {
       this.state.email,
       this.state.city
     )
-    // this.setState({
-    //   modalOpen: !this.state.modalOpen
-    // });
-    // this.props.history.push('/');
+    
   }
   render() {
     return (
       <Modal
         open={this.state.modalOpen}
-        onClose={this.handleClose}
+        //onClose={this.setState({modalOpen: !this.state.modalOpen})}
         basic
         size='small'
       >
@@ -70,7 +61,7 @@ class UserForm extends Component {
             </Form.Group>
             <Button.Group>
               <Button
-                onClick={() => this.handleClose()}>
+                onClick={() => this.setState({modalOpen: this.props.close})}>
                 Cancel
             </Button>
               <Button.Or />

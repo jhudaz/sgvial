@@ -2,7 +2,8 @@
 
 function getInitialState() {
   return {
-    users: []
+    users: [],
+    user: {}
   }
 }
 export default function (state = getInitialState(), action) {
@@ -11,6 +12,11 @@ export default function (state = getInitialState(), action) {
       return {
         ...state,
         users: action.payload
+      }
+    case 'USER':
+      return {
+        ...state,
+        user: action.payload
       }
     default:
       return state;

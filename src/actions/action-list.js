@@ -18,12 +18,30 @@ export function createList() {
       })
   }
 }
-//POST
-export function createUser(id,name, username, email, city) {
-  console.log('datos para guardar: ',name, username, email, city)
+//GET  user by id
+export function getUser(id) {
+  console.log('id: ',id);
   return dispatch => {
     return axios
-      .post(`${url}`,{id:11,name, username, email, city})
+      .get(`${url}/`, { params: { id } })
+      .then(res => {
+        dispatch ({
+          type:'USER',
+          payload:res.data
+        })
+      })
+      .catch(err => {
+        throw err
+      })
+}
+}
+
+//POST
+export function createUser(id, name, username, email, city) {
+  console.log('datos para guardar: ', name, username, email, city)
+  return dispatch => {
+    return axios
+      .post(`${url}`, { name, username, email, city })
       .then(res => {
         dispatch(
           createList()
@@ -38,7 +56,7 @@ export function createUser(id,name, username, email, city) {
 export function updateUser(id, name, username, email, city) {
   return dispatch => {
     return axios
-      .put(`${url}/`,{ id, name, username, email, city})
+      .put(`${url}/`, { id, name, username, email, city })
       .then(res => {
         dispatch(
           createList()

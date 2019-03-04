@@ -13,7 +13,6 @@ class App extends Component {
         <div>
           <Route exact path="/" component={UsersList} />
           <Route path="/edit/:userId" component={UserForm} />
-          <Route path="/create" component={UserForm} />
         </div>
       </Router>
     );

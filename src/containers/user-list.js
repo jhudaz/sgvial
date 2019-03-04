@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Container, Header, List, Button, Card } from 'semantic-ui-react'
+import { Container, Header, List, Button, Card } from 'semantic-ui-react';
 
-import { createList, deleteUser } from '../actions';
+import UserForm from './user-form';
+import { createList, getUser, deleteUser } from '../actions';
+
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -11,7 +13,8 @@ class UsersList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      users: []
+      users: [],
+      showModal: false
     }
     this.filterList = this.filterList.bind(this);
   }
@@ -42,7 +45,9 @@ class UsersList extends Component {
         </Card.Content>
         <Card.Content extra>
           <div>
-            <Button primary>
+            <Button 
+              primary
+              onClick={() => this.props.getUser(this.props.reducerApp.users[i].id)}>
               Edit
             </Button>
             <Button secondary>
@@ -61,7 +66,7 @@ class UsersList extends Component {
         <Button.Group floated='right'>
           <Button
             primary
-            onClick={() => this.props.history.push('/create')}>
+            onClick={() => this.setState({ showModal: true })}>
             Create
             </Button>
         </Button.Group>
@@ -79,7 +84,9 @@ class UsersList extends Component {
         <Card.Group>
           {this.state.users.map((e, i) => this.createList(e, i))}
         </Card.Group>
-
+        {this.state.showModal &&
+          <UserForm close={false} />
+        }
       </Container>
     )
   }
@@ -94,6 +101,7 @@ function mapStateToProps({ reducerApp }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     createList,
+    getUser,
     deleteUser
   }, dispatch)
 }
