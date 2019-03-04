@@ -38,7 +38,6 @@ export function getUser(id) {
 
 //POST
 export function createUser(id, name, username, email, city) {
-  console.log('datos para guardar: ', name, username, email, city)
   return dispatch => {
     return axios
       .post(`${url}`, { name, username, email, city })
@@ -54,9 +53,10 @@ export function createUser(id, name, username, email, city) {
 }
 //UPDATE
 export function updateUser(id, name, username, email, city) {
+  console.log('datos: ', id, name, username, email, city)
   return dispatch => {
     return axios
-      .put(`${url}/`, { id, name, username, email, city })
+      .put(`${url}/${id}`, { name, username, email, city })
       .then(res => {
         dispatch(
           createList()

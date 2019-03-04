@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form, Header, Modal } from 'semantic-ui-react';
 
-import { createUser } from '../actions';
+import { createUser, updateUser } from '../actions';
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -26,7 +26,7 @@ class UserForm extends Component {
         email: this.props.user.email,
         city: this.props.user.address.city
       })
-    } 
+    }
   }
   //to save an user
   saveUser() {
@@ -36,6 +36,17 @@ class UserForm extends Component {
       this.state.email,
       this.state.city
     )
+    this.setState({ modalOpen: this.props.close()})
+  }
+  editUser() {
+    this.props.updateUser(
+      this.props.user.id,
+      this.state.name,
+      this.state.userName,
+      this.state.email,
+      this.state.city
+    )
+    this.setState({ modalOpen: this.props.close()})
   }
   render() {
     return (
@@ -59,17 +70,17 @@ class UserForm extends Component {
                 fluid label='User name'
                 placeholder='Last name'
                 onChange={e => this.setState({ userName: e.target.value })}
-                value={this.state.userName}  />
+                value={this.state.userName} />
               <Form.Input
                 fluid label='Email'
                 placeholder='Email'
                 onChange={e => this.setState({ email: e.target.value })}
-                value={this.state.email}  />
+                value={this.state.email} />
               <Form.Input
                 fluid label='City'
                 placeholder='City'
                 onChange={e => this.setState({ city: e.target.value })}
-                value={this.state.city}  />
+                value={this.state.city} />
             </Form.Group>
             <Button.Group>
               <Button
@@ -79,7 +90,13 @@ class UserForm extends Component {
               <Button.Or />
               <Button
                 positive
-                onClick={() => this.saveUser()}>
+                onClick={() => {
+                  if (this.props.user !== null) {
+                    this.editUser();
+                  } else {
+                    this.saveUser();
+                  }
+                }}>
                 Save
             </Button>
             </Button.Group>
@@ -100,7 +117,8 @@ function mapStateToProps({ reducerApp }) {
 //actions
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    createUser
+    createUser,
+    updateUser
   }, dispatch)
 }
 
