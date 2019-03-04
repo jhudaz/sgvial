@@ -1,6 +1,6 @@
 function getInitialState() {
   return {
-    comments: []
+    users: []
   }
 }
 export default function (state = getInitialState(), action) {
@@ -8,7 +8,7 @@ export default function (state = getInitialState(), action) {
     case 'LIST':
       return {
         ...state,
-        comments: action.payload
+        users: action.payload
       }
     default:
       return state;

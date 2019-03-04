@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Container, Header, List, Button, Card, Image } from 'semantic-ui-react'
+import { Container, Header, List, Button, Card } from 'semantic-ui-react'
 
 import { createList } from '../actions';
 
@@ -11,14 +11,24 @@ class UsersList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      users: []
     }
+    this.filterList = this.filterList.bind(this);
   }
   componentDidMount() {
-    this.props.createList();
+    this.props.createList()
+      .then(() => {
+        this.setState({ 
+          users: this.props.reducerApp.users 
+        })
+      });
+  }
+  filterList(e){
+    this.setState({
+      users: this.props.reducerApp.users.filter( a => a.name.toLowerCase().startsWith(e.toLowerCase()))
+    })
   }
   createList(e, i) {
-
     return (
       <Card key={i}>
         <Card.Content>
@@ -49,12 +59,15 @@ class UsersList extends Component {
         <Header as="h3">Users List</Header>
         <List bulleted>
           <div className="ui left icon input">
-            <input type="text" placeholder="Search users..." />
-            <i class="users icon"></i>
+            <input
+              type="text"
+              placeholder="Search users..."
+              onChange={e => this.filterList(e.target.value)} />
+            <i className="users icon"></i>
           </div>
         </List>
         <Card.Group>
-          {this.props.reducerApp.comments.map((e, i) => this.createList(e, i))}
+          {this.state.users.map((e, i) => this.createList(e, i))}
         </Card.Group>
 
       </Container>
