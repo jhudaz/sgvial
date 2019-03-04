@@ -31,7 +31,7 @@ $ git clone https://github.com/jhudaz/sgvial.git
 Install the dependencies.
 
 ```sh
-$ cd rick
+$ cd sgvial
 $ yarn install
 ```
 
