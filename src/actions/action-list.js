@@ -1,17 +1,64 @@
 import axios from 'axios';
 
-export function createList(){
+const url = 'https://jsonplaceholder.typicode.com/users';
+//GET
+export function createList() {
   return dispatch => {
     return axios
-      .get('https://jsonplaceholder.typicode.com/users')
-      .then(res =>{
+      .get(url)
+      .then(res => {
         dispatch({
-          type:'LIST',
-          payload:res.data
+          type: 'LIST',
+          payload: res.data
         })
       })
-      .catch(err =>{
+      .catch(err => {
         throw err;
+      })
+  }
+}
+//POST
+export function createUser(name, username, email, city) {
+  return dispatch => {
+    return axios
+      .post(url + { name, username, email, city })
+      .then(res => {
+        dispatch(
+          createList()
+        )
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+//UPDATE
+export function updateUser(id, name, username, email, city) {
+  return dispatch => {
+    return axios
+      .put(`${url}/`,{ id, name, username, email, city})
+      .then(res => {
+        dispatch(
+          createList()
+        )
+      })
+      .catch(err => {
+        throw err
+      })
+  }
+}
+//DELETE
+export function deleteUser(id) {
+  return dispatch => {
+    return axios
+      .delete(`${url}/`, { data: { id } })
+      .then(res => {
+        dispatch(
+          createList()
+        )
+      })
+      .catch(err => {
+        throw err
       })
   }
 }

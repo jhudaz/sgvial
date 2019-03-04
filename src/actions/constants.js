@@ -1,1 +1,1 @@
-const url = 'https://jsonplaceholder.typicode.com';
+const url = 'https://jsonplaceholder.typicode.com/users';

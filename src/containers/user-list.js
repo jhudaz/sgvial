@@ -18,14 +18,14 @@ class UsersList extends Component {
   componentDidMount() {
     this.props.createList()
       .then(() => {
-        this.setState({ 
-          users: this.props.reducerApp.users 
+        this.setState({
+          users: this.props.reducerApp.users
         })
       });
   }
-  filterList(e){
+  filterList(e) {
     this.setState({
-      users: this.props.reducerApp.users.filter( a => a.name.toLowerCase().startsWith(e.toLowerCase()))
+      users: this.props.reducerApp.users.filter(a => a.name.toLowerCase().startsWith(e.toLowerCase()))
     })
   }
   createList(e, i) {
@@ -44,10 +44,10 @@ class UsersList extends Component {
           <div>
             <Button primary>
               Edit
-              </Button>
+            </Button>
             <Button secondary>
               Delete
-              </Button>
+            </Button>
           </div>
         </Card.Content>
       </Card>
@@ -56,15 +56,25 @@ class UsersList extends Component {
   render() {
     return (
       <Container style={{ margin: 20 }}>
+
         <Header as="h3">Users List</Header>
-        <List bulleted>
-          <div className="ui left icon input">
-            <input
-              type="text"
-              placeholder="Search users..."
-              onChange={e => this.filterList(e.target.value)} />
-            <i className="users icon"></i>
-          </div>
+        <List>
+          <List.Item>
+            <div className="ui left icon input">
+              <input
+                type="text"
+                placeholder="Search users..."
+                onChange={e => this.filterList(e.target.value)} />
+              <i className="users icon"></i>
+            </div>
+          </List.Item>
+          <List.Item>
+            <Button 
+              primary
+              onClick={() => this.createList()}>
+              Create
+            </Button>
+          </List.Item>
         </List>
         <Card.Group>
           {this.state.users.map((e, i) => this.createList(e, i))}
