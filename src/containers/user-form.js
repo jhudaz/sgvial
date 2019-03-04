@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Form, Header, Modal, Loader } from 'semantic-ui-react';
+import { Button, Form, Header, Modal, Loader, Divider } from 'semantic-ui-react';
+import { Field, reduxForm } from 'redux-form'
 
 import { createUser, updateUser } from '../actions';
 
@@ -63,28 +64,41 @@ class UserForm extends Component {
         <Modal.Content>
           <h3>Fill the fields to save a new user</h3>
           <Form inverted>
-            <Form.Group widths='equal'>
-              <Form.Input
-                fluid label='Full name'
-                placeholder='First name'
-                onChange={e => this.setState({ name: e.target.value })}
-                value={this.state.name} />
-              <Form.Input
-                fluid label='User name'
-                placeholder='Last name'
-                onChange={e => this.setState({ userName: e.target.value })}
-                value={this.state.userName} />
-              <Form.Input
-                fluid label='Email'
-                placeholder='Email'
-                onChange={e => this.setState({ email: e.target.value })}
-                value={this.state.email} />
-              <Form.Input
-                fluid label='City'
-                placeholder='City'
-                onChange={e => this.setState({ city: e.target.value })}
-                value={this.state.city} />
-            </Form.Group>
+
+            <label htmlFor="Name">Full name</label>
+            <Field
+              name="Name"
+              placeholder="Full name"
+              component="input"
+              type="text"
+              onChange={e => this.setState({ name: e.target.value })}
+              value={this.state.name} />
+            <label htmlFor="Username">Username</label>
+            <Field
+              name="Username"
+              placeholder="Username"
+              component="input"
+              type="text"
+              onChange={e => this.setState({ userName: e.target.value })}
+              value={this.state.userName} />
+            <label htmlFor="Email">Email</label>
+            <Field
+              name="Email"
+              placeholder="Email"
+              component="input"
+              type="email"
+              onChange={e => this.setState({ email: e.target.value })}
+              value={this.state.email} />
+            <label htmlFor="City">City</label>
+            <Field
+              name="City"
+              placeholder="City"
+              component="input"
+              type="text"
+              onChange={e => this.setState({ city: e.target.value })}
+              value={this.state.city} />
+
+            <Divider />
             <Button.Group>
               <Button
                 onClick={() => this.setState({ modalOpen: this.props.close() })}>
@@ -120,6 +134,9 @@ function mapDispatchToProps(dispatch) {
     updateUser
   }, dispatch)
 }
+const ContactForm = reduxForm({
+  // a unique name for the form
+  form: 'user'
+})(UserForm)
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
