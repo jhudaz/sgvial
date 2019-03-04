@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Container, Header, List, Button, Card } from 'semantic-ui-react'
 
-import { createList } from '../actions';
+import { createList, deleteUser } from '../actions';
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -58,6 +58,13 @@ class UsersList extends Component {
       <Container style={{ margin: 20 }}>
 
         <Header as="h3">Users List</Header>
+        <Button.Group floated='right'>
+          <Button
+            primary
+            onClick={() => this.props.history.push('/create')}>
+            Create
+            </Button>
+        </Button.Group>
         <List>
           <List.Item>
             <div className="ui left icon input">
@@ -67,13 +74,6 @@ class UsersList extends Component {
                 onChange={e => this.filterList(e.target.value)} />
               <i className="users icon"></i>
             </div>
-          </List.Item>
-          <List.Item>
-            <Button 
-              primary
-              onClick={() => this.createList()}>
-              Create
-            </Button>
           </List.Item>
         </List>
         <Card.Group>
@@ -93,7 +93,8 @@ function mapStateToProps({ reducerApp }) {
 //actions
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    createList
+    createList,
+    deleteUser
   }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(UsersList)

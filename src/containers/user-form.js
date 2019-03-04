@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Form, Segment } from 'semantic-ui-react'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Button, Form, Header, Icon, Modal } from 'semantic-ui-react'
+
+import { createUser } from '../actions';
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -7,27 +11,95 @@ class UserForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      modalOpen: true,
+      name: '',
+      userName: '',
+      email: '',
+      city: ''
     }
   }
-
+  //to close the modal and redirect to the users list
+  handleClose() {
+    this.setState({
+      modalOpen: !this.state.modalOpen
+    });
+    this.props.history.push('/');
+  }
+  //to save an user
+  saveUser() {
+    this.props.createUser(
+      this.state.name,
+      this.state.userName,
+      this.state.email,
+      this.state.city
+    )
+    // this.setState({
+    //   modalOpen: !this.state.modalOpen
+    // });
+    // this.props.history.push('/');
+  }
   render() {
     return (
-      <Segment inverted>
-        <Form inverted>
-          <Form.Group widths='equal'>
-            <Form.Input fluid label='Full name' placeholder='First name' />
-            <Form.Input fluid label='User name' placeholder='Last name' />
-            <Form.Input fluid label='Email' placeholder='Email' />
-            <Form.Input fluid label='City' placeholder='City' />
-          </Form.Group>
-          <Button.Group>
-            <Button>Cancel</Button>
-            <Button.Or />
-            <Button positive>Save</Button>
-          </Button.Group>
-        </Form>
-      </Segment>
+      <Modal
+        open={this.state.modalOpen}
+        onClose={this.handleClose}
+        basic
+        size='small'
+      >
+        <Header icon='browser' content='User Information' />
+        <Modal.Content>
+          <h3>Fill the fields to save a new user</h3>
+          <Form inverted>
+            <Form.Group widths='equal'>
+              <Form.Input
+                fluid label='Full name'
+                placeholder='First name'
+                onChange={e => this.setState({ name: e.target.value })} />
+              <Form.Input
+                fluid label='User name'
+                placeholder='Last name'
+                onChange={e => this.setState({ userName: e.target.value })} />
+              <Form.Input
+                fluid label='Email'
+                placeholder='Email'
+                onChange={e => this.setState({ email: e.target.value })} />
+              <Form.Input
+                fluid label='City'
+                placeholder='City'
+                onChange={e => this.setState({ city: e.target.value })} />
+            </Form.Group>
+            <Button.Group>
+              <Button
+                onClick={() => this.handleClose()}>
+                Cancel
+            </Button>
+              <Button.Or />
+              <Button
+                positive
+                onClick={() => this.saveUser()}>
+                Save
+            </Button>
+            </Button.Group>
+          </Form>
+        </Modal.Content>
+      </Modal>
+
+
     )
   }
 }
-export default UserForm;
+//reducer
+function mapStateToProps({ reducerApp }) {
+  return {
+    reducerApp
+  }
+}
+//actions
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    createUser
+  }, dispatch)
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);

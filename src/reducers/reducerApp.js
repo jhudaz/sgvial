@@ -1,3 +1,5 @@
+//import { Map as map } from 'immutable';
+
 function getInitialState() {
   return {
     users: []
