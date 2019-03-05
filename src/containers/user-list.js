@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Container, Header, List, Button, Card } from 'semantic-ui-react';
 
 import UserForm from './user-form';
-import { createList, getUser, deleteUser } from '../actions';
+import { createList, deleteUser } from '../actions';
 
 
 import "semantic-ui-css/semantic.min.css";
@@ -13,7 +13,6 @@ class UsersList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      users: [],
       showModal: false,
       user: null
     }
@@ -21,32 +20,25 @@ class UsersList extends Component {
   }
   componentDidMount() {
     this.props.createList()
-      .then(() => {
-        this.setState({
-          users: this.props.reducerApp.users
-        })
-      });
   }
   deleteUser(userId) {
-    this.props.deleteUser(userId).then(() => {
-      this.setState({ users: this.state.users.filter(i => i.id !== userId) });
-    })
-    .catch(err =>  {
-      throw err
-    })
+    this.props.deleteUser(userId)
+      .then(() => {
+        console.log('elimina!!!!!!')
+        this.props.reducerApp.users.filter(i => i.id !== userId);
+      }).catch(err => {
+        throw err
+      })
   }
-
   filterList(e) {
     this.setState({
       users: this.props.reducerApp.users.filter(a => a.name.toLowerCase().startsWith(e.toLowerCase()))
     })
   }
   editUser(user) {
-    this.props.getUser(user.id).then(
-      this.setState({
-        showModal: true, user
-      })
-    )
+    this.setState({
+      showModal: true, user
+    })
   }
   createList(user, i) {
     return (
@@ -101,7 +93,7 @@ class UsersList extends Component {
           </List.Item>
         </List>
         <Card.Group>
-          {this.state.users.map((e, i) => this.createList(e, i))}
+          {this.props.reducerApp.users.map((e, i) => this.createList(e, i))}
         </Card.Group>
         {this.state.showModal &&
           <UserForm user={this.state.user} close={() => this.setState({ showModal: false, user: null })} />
@@ -120,7 +112,6 @@ function mapStateToProps({ reducerApp }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     createList,
-    getUser,
     deleteUser
   }, dispatch)
 }
