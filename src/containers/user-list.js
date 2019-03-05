@@ -23,12 +23,6 @@ class UsersList extends Component {
   }
   deleteUser(userId) {
     this.props.deleteUser(userId)
-      .then(() => {
-        console.log('elimina!!!!!!')
-        this.props.reducerApp.users.filter(i => i.id !== userId);
-      }).catch(err => {
-        throw err
-      })
   }
   filterList(e) {
     this.setState({

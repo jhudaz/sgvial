@@ -38,5 +38,11 @@ export function deleteUser(id) {
   return dispatch => {
     return axios
       .delete(`${url}/${id}`)
+      .then(res =>{
+        dispatch({
+          type: 'DELETE',
+          payload: id
+        })
+      })
   }
 }

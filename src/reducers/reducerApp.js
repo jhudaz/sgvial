@@ -12,6 +12,11 @@ export default function (state = getInitialState(), action) {
         ...state,
         users: action.payload
       }
+    case 'DELETE':
+      return {
+        ...state,
+        users: state.users.filter(i => i.id !== action.payload)
+      }
     default:
       return state;
   }
