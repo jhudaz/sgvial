@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form, Header, Modal, Loader, Divider } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, change } from 'redux-form'
 
 import { createUser, updateUser } from '../actions';
 
@@ -13,10 +13,6 @@ class UserForm extends Component {
     super(props);
     this.state = {
       modalOpen: true,
-      name: '',
-      userName: '',
-      email: '',
-      city: '',
       loading: false
     }
   }
@@ -72,7 +68,7 @@ class UserForm extends Component {
               component="input"
               type="text"
               onChange={e => this.setState({ name: e.target.value })}
-              value={this.state.name} />
+              value={this.props} />
             <label htmlFor="Username">Username</label>
             <Field
               name="Username"
@@ -139,4 +135,7 @@ const ContactForm = reduxForm({
   form: 'user'
 })(UserForm)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactForm);

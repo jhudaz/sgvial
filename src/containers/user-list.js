@@ -27,6 +27,15 @@ class UsersList extends Component {
         })
       });
   }
+  deleteUser(userId) {
+    this.props.deleteUser(userId).then(() => {
+      this.setState({ users: this.state.users.filter(i => i.id !== userId) });
+    })
+    .catch(err =>  {
+      throw err
+    })
+  }
+
   filterList(e) {
     this.setState({
       users: this.props.reducerApp.users.filter(a => a.name.toLowerCase().startsWith(e.toLowerCase()))
@@ -58,9 +67,9 @@ class UsersList extends Component {
               onClick={() => this.editUser(user)}>
               Edit
             </Button>
-            <Button 
+            <Button
               secondary
-              onClick={() => this.props.deleteUser(user.id)}>
+              onClick={() => this.deleteUser(user.id)}>
               Delete
             </Button>
           </div>
