@@ -1,6 +1,3 @@
-
-//import { Map as map } from 'immutable';
-
 function getInitialState() {
   return {
     users: []
@@ -16,9 +13,7 @@ export default function (state = getInitialState(), action) {
       }
     case 'CREATE':
       users = state.users.slice(0);
-      console.log('id:', users)
       users.push({ ...action.payload, address: { city: action.payload.city }, id: users.length + 1 })
-      console.log('new data:', users)
       return {
         ...state,
         users

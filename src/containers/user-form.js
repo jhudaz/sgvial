@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Form, Header, Modal, Loader, Divider } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form/immutable'
 
 import { createUser, updateUser } from '../actions';
 

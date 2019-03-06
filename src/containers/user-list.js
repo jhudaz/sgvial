@@ -20,6 +20,7 @@ class UsersList extends Component {
     this.filterList = this.filterList.bind(this);
   }
   componentDidMount() {
+    console.log('estado', this.props.reducerApp)
     this.props.createList().then(() => {
       this.setState({ users: this.props.reducerApp.users })
     })
