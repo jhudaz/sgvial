@@ -44,6 +44,9 @@ $ yarn start
 ```
 this will display the app on the browser
 
+![app](https://raw.githubusercontent.com/jhudaz/sgvial/master/src/img/Screenshot%20from%202019-03-06%2012-21-47.png)
+
+
 
 
 License
