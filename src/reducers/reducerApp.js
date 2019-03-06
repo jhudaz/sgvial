@@ -7,7 +7,7 @@ function getInitialState() {
   }
 }
 export default function (state = getInitialState(), action) {
-  let users = null
+  let users = null;
   switch (action.type) {
     case 'LIST':
       return {
@@ -16,13 +16,9 @@ export default function (state = getInitialState(), action) {
       }
     case 'CREATE':
       users = state.users.slice(0);
-      users.push({
-        ...action.payload,
-        id: users[users.lenght]+1,
-        address: {
-          city: action.payload.city
-        }
-      })
+      console.log('id:', users)
+      users.push({ ...action.payload, address: { city: action.payload.city }, id: users.length + 1 })
+      console.log('new data:', users)
       return {
         ...state,
         users

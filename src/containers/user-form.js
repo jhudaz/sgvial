@@ -39,7 +39,7 @@ class UserForm extends Component {
       //edit
       this.props.updateUser({
         ...values,
-        id: this.props.user.id -1  > 10 ? 10 : this.props.user.id -1
+        id: this.props.user.id   > 10 ? 10 : this.props.user.id 
       }, this.props.user.id).then(() => {
         this.setState({ loading: false });
         this.props.close();
