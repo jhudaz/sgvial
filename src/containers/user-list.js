@@ -6,23 +6,28 @@ import { Container, Header, List, Button, Card } from 'semantic-ui-react';
 import UserForm from './user-form';
 import { createList, deleteUser } from '../actions';
 
-
 import "semantic-ui-css/semantic.min.css";
 
 class UsersList extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      users: [],
       showModal: false,
       user: null
     }
+    this.closeModal = this.closeModal.bind(this);
     this.filterList = this.filterList.bind(this);
   }
   componentDidMount() {
-    this.props.createList()
+    this.props.createList().then(() => {
+      this.setState({ users: this.props.reducerApp.users })
+    })
   }
   deleteUser(userId) {
-    this.props.deleteUser(userId)
+    this.props.deleteUser(userId).then(() => {
+      this.setState({ users: this.props.reducerApp.users });
+    })
   }
   filterList(e) {
     this.setState({
@@ -31,7 +36,8 @@ class UsersList extends Component {
   }
   editUser(user) {
     this.setState({
-      showModal: true, user
+      showModal: true,
+      user
     })
   }
   createList(user, i) {
@@ -63,6 +69,13 @@ class UsersList extends Component {
       </Card>
     )
   }
+  closeModal() {
+    this.setState({
+      showModal: false,
+      user: null,
+      users: this.props.reducerApp.users
+    })
+  }
   render() {
     return (
       <Container style={{ margin: 20 }}>
@@ -87,10 +100,10 @@ class UsersList extends Component {
           </List.Item>
         </List>
         <Card.Group>
-          {this.props.reducerApp.users.map((e, i) => this.createList(e, i))}
+          {this.state.users.map((user, i) => this.createList(user, i))}
         </Card.Group>
         {this.state.showModal &&
-          <UserForm user={this.state.user} close={() => this.setState({ showModal: false, user: null })} />
+          <UserForm user={this.state.user} close={this.closeModal} />
         }
       </Container>
     )

@@ -37,37 +37,17 @@ class UserForm extends Component {
     this.setState({ loading: true });
     if (this.props.user !== null) {
       //edit
-      let index = (this.props.user.id) - 1;
-      let newData = {
-        ...values,
-        id: this.props.user.id,
-        address: {
-          city: values.city
-        }
-      };
       this.props.updateUser({
         ...values,
-        id: this.props.reducerApp.users[index].id > 10 ? 10 : this.props.reducerApp.users[index].id
-      }).then(() => {
-        this.props.reducerApp.users.splice(index, 1, newData);
+        id: this.props.user.id -1  > 10 ? 10 : this.props.user.id -1
+      }, this.props.user.id).then(() => {
         this.setState({ loading: false });
         this.props.close();
       });
     } else {
       //save
-      let id = (this.props.reducerApp.users.length) + 1;
-      let newData = {
-        ...values,
-        id,
-        address: {
-          city: values.city
-        }
-      };
       this.props.createUser(values).then(() => {
-        this.props.reducerApp.users.push(newData);
-        this.setState({
-          loading: false
-        });
+        this.setState({ loading: false });
         this.props.close();
       });
     }
@@ -124,7 +104,6 @@ class UserForm extends Component {
               <Button.Or />
               <Button
                 positive
-                // onClick={() => this.saveData()}
                 action="submit"
               >
                 Save

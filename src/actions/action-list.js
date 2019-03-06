@@ -24,13 +24,27 @@ export function createUser(params) {
   return dispatch => {
     return axios
       .post(`${url}`, params)
+      .then(res => {
+        dispatch({
+          type: 'CREATE',
+          payload: res.data
+        })
+      })
   }
 }
 //UPDATE
-export function updateUser(params) {
+export function updateUser(params, realId) {
+  console.log('data a actualizar:', params, realId)
   return dispatch => {
     return axios
       .put(`${url}/${params.id}`, params)
+      .then(res => {
+        res.data.id = realId;
+        dispatch({
+          type: 'UPDATE',
+          payload: res.data
+        })
+      })
   }
 }
 //DELETE
@@ -38,7 +52,7 @@ export function deleteUser(id) {
   return dispatch => {
     return axios
       .delete(`${url}/${id}`)
-      .then(res =>{
+      .then(() => {
         dispatch({
           type: 'DELETE',
           payload: id
