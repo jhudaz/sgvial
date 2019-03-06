@@ -28,25 +28,31 @@ class UserForm extends Component {
         "email": this.props.user.email,
         "city": this.props.user.address.city,
       };
-
       this.props.initialize(initData);
     }
   }
-  //to save an user
+  //to save or edit an user depending if the user-prop have data
   saveData(values) {
+    //applying immutability to the store creating a new object from it
+    const v = {
+      name: values.get('name'),
+      username: values.get('username'),
+      email: values.get('email'),
+      city: values.get('city')
+    }
     this.setState({ loading: true });
     if (this.props.user !== null) {
       //edit
       this.props.updateUser({
-        ...values,
-        id: this.props.user.id   > 10 ? 10 : this.props.user.id 
+        ...v,
+        id: this.props.user.id > 10 ? 10 : this.props.user.id
       }, this.props.user.id).then(() => {
         this.setState({ loading: false });
         this.props.close();
       });
     } else {
       //save
-      this.props.createUser(values).then(() => {
+      this.props.createUser(v).then(() => {
         this.setState({ loading: false });
         this.props.close();
       });
@@ -118,9 +124,9 @@ class UserForm extends Component {
   }
 }
 //reducer
-function mapStateToProps({ reducerApp }) {
+function mapStateToProps(state) {
   return {
-    reducerApp
+    reducerApp: state.get('reducerApp')
   }
 }
 //actions
@@ -130,6 +136,7 @@ function mapDispatchToProps(dispatch) {
     updateUser
   }, dispatch)
 }
+//redux form 
 const ContactForm = reduxForm({
   form: 'user'
 })(UserForm)

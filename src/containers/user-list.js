@@ -20,27 +20,30 @@ class UsersList extends Component {
     this.filterList = this.filterList.bind(this);
   }
   componentDidMount() {
-    console.log('estado', this.props.reducerApp)
     this.props.createList().then(() => {
       this.setState({ users: this.props.reducerApp.users })
     })
   }
+  //to dele
   deleteUser(userId) {
     this.props.deleteUser(userId).then(() => {
       this.setState({ users: this.props.reducerApp.users });
     })
   }
+  //to  search a user by the name field
   filterList(e) {
     this.setState({
       users: this.props.reducerApp.users.filter(a => a.name.toLowerCase().startsWith(e.toLowerCase()))
     })
   }
+  //to pass the user data to the form to update
   editUser(user) {
     this.setState({
       showModal: true,
       user
     })
   }
+  //to create a list from the data that send the API
   createList(user, i) {
     return (
       <Card key={i}>
@@ -70,6 +73,7 @@ class UsersList extends Component {
       </Card>
     )
   }
+  //to close the modal, clean the user prop, and set the users state with the new data
   closeModal() {
     this.setState({
       showModal: false,
@@ -111,9 +115,9 @@ class UsersList extends Component {
   }
 }
 //reducer
-function mapStateToProps({ reducerApp }) {
+function mapStateToProps(state) {
   return {
-    reducerApp
+    reducerApp: state.get('reducerApp')
   }
 }
 //actions
